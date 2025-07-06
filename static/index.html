@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loteria Imperatriz - Controle Financeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#dashboard">
+                <i class="fas fa-store me-2"></i>
+                Loteria Imperatriz
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" onclick="mostrarPagina('dashboard')">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-cash-register me-1"></i>Caixas
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#caixa1" onclick="mostrarCaixa(1)">Caixa 1</a></li>
+                            <li><a class="dropdown-item" href="#caixa2" onclick="mostrarCaixa(2)">Caixa 2</a></li>
+                            <li><a class="dropdown-item" href="#caixa3" onclick="mostrarCaixa(3)">Caixa 3</a></li>
+                            <li><a class="dropdown-item" href="#caixa4" onclick="mostrarCaixa(4)">Caixa 4</a></li>
+                            <li><a class="dropdown-item" href="#caixa5" onclick="mostrarCaixa(5)">Caixa 5</a></li>
+                            <li><a class="dropdown-item" href="#caixa6" onclick="mostrarCaixa(6)">Caixa 6</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#central" onclick="mostrarPagina('central')">
+                            <i class="fas fa-building me-1"></i>Caixa Central
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#historico" onclick="mostrarPagina('historico')">
+                            <i class="fas fa-history me-1"></i>Histórico
+                        </a>
+                    </li>
+                </ul>
+                <div class="navbar-text">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    <span id="dataAtual"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Container Principal -->
+    <div class="container-fluid mt-5 pt-3">
+        <!-- Dashboard -->
+        <div id="pagina-dashboard" class="pagina">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="text-primary mb-3">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Dashboard - Visão Geral
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Cards de Resumo -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Total Suprimentos</h6>
+                                    <h4 id="totalSuprimentos">R$ 0,00</h4>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-arrow-up fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Total Sangrias</h6>
+                                    <h4 id="totalSangrias">R$ 0,00</h4>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-arrow-down fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Saldo Total</h6>
+                                    <h4 id="saldoTotal">R$ 0,00</h4>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-wallet fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="card-title">Caixas c/ Problema</h6>
+                                    <h4 id="caixasProblema">0</h4>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid de Caixas -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Status dos Caixas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" id="gridCaixas">
+                                <!-- Cards dos caixas serão inseridos aqui via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página do Caixa Individual -->
+        <div id="pagina-caixa" class="pagina" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="text-primary mb-3">
+                        <i class="fas fa-cash-register me-2"></i>
+                        <span id="tituloCaixa">Caixa 1</span>
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Seleção de Data -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Data de Trabalho</h6>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" onclick="alterarData(-1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <input type="date" class="form-control text-center" id="dataCaixa">
+                                <button class="btn btn-outline-secondary" onclick="alterarData(1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                                <button class="btn btn-primary" onclick="carregarDadosCaixa()">
+                                    <i class="fas fa-sync-alt"></i> Carregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Saldo Inicial</h6>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="saldoInicial" step="0.01" readonly>
+                            </div>
+                            <small class="text-muted">Valor da máquina do dia anterior</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Movimentações (Suprimentos e Sangrias lado a lado) -->
+            <div class="row mb-4">
+                <!-- Suprimentos -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-arrow-up me-2"></i>
+                                Suprimentos Recebidos
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="listaSuprimentos">
+                                <!-- Suprimentos serão inseridos aqui -->
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm w-100 mt-2" onclick="adicionarMovimentacao('suprimento')">
+                                <i class="fas fa-plus me-1"></i>Adicionar Suprimento
+                            </button>
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <strong>Total: R$ <span id="totalSuprimentosCaixa">0,00</span></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sangrias -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-arrow-down me-2"></i>
+                                Sangrias Enviadas
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="listaSangrias">
+                                <!-- Sangrias serão inseridas aqui -->
+                            </div>
+                            <button class="btn btn-outline-success btn-sm w-100 mt-2" onclick="adicionarMovimentacao('sangria')">
+                                <i class="fas fa-plus me-1"></i>Adicionar Sangria
+                            </button>
+                            <div class="mt-3 p-2 bg-light rounded">
+                                <strong>Total: R$ <span id="totalSangriasCaixa">0,00</span></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fechamento -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h6 class="mb-0">
+                                <i class="fas fa-calculator me-2"></i>
+                                Fechamento do Dia
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Valor da Máquina</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" class="form-control" id="valorMaquina" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Saldo Calculado</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" class="form-control" id="saldoCalculado" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Diferença</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" class="form-control" id="diferenca" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Status</label>
+                                    <div class="form-control text-center" id="statusCaixa">
+                                        <span class="badge bg-secondary">PENDENTE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <label class="form-label">Observações</label>
+                                    <textarea class="form-control" id="observacoes" rows="2" placeholder="Anote qualquer observação sobre o fechamento..."></textarea>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <button class="btn btn-success me-2" onclick="salvarFechamento()">
+                                        <i class="fas fa-save me-1"></i>Salvar Fechamento
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="limparFormulario()">
+                                        <i class="fas fa-eraser me-1"></i>Limpar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página do Caixa Central -->
+        <div id="pagina-central" class="pagina" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="text-primary mb-3">
+                        <i class="fas fa-building me-2"></i>
+                        Caixa Central - Consolidação
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Seleção de Data Central -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title">Data de Consulta</h6>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="dataCentral">
+                                <button class="btn btn-primary" onclick="carregarDadosCentral()">
+                                    <i class="fas fa-sync-alt"></i> Atualizar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consolidação Geral -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0">Consolidação Geral</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3">
+                                    <h5 class="text-primary">Total Suprimentos</h5>
+                                    <h4 id="totalSuprimentosCentral">R$ 0,00</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-success">Total Sangrias</h5>
+                                    <h4 id="totalSangriasCentral">R$ 0,00</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-info">Saldo Total</h5>
+                                    <h4 id="saldoTotalCentral">R$ 0,00</h4>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5 class="text-warning">Caixas c/ Problema</h5>
+                                    <h4 id="caixasProblemaCentral">0</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela Detalhada -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Detalhamento por Caixa</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Caixa</th>
+                                            <th>Saldo Inicial</th>
+                                            <th>Suprimentos</th>
+                                            <th>Sangrias</th>
+                                            <th>Saldo Calculado</th>
+                                            <th>Valor Máquina</th>
+                                            <th>Diferença</th>
+                                            <th>Status</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabelaCentral">
+                                        <!-- Dados serão inseridos aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Histórico -->
+        <div id="pagina-historico" class="pagina" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2 class="text-primary mb-3">
+                        <i class="fas fa-history me-2"></i>
+                        Histórico de Fechamentos
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Data Início</label>
+                                    <input type="date" class="form-control" id="dataInicioHistorico">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Data Fim</label>
+                                    <input type="date" class="form-control" id="dataFimHistorico">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Caixa</label>
+                                    <select class="form-control" id="caixaHistorico">
+                                        <option value="">Todos os Caixas</option>
+                                        <option value="1">Caixa 1</option>
+                                        <option value="2">Caixa 2</option>
+                                        <option value="3">Caixa 3</option>
+                                        <option value="4">Caixa 4</option>
+                                        <option value="5">Caixa 5</option>
+                                        <option value="6">Caixa 6</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">&nbsp;</label>
+                                    <div>
+                                        <button class="btn btn-primary" onclick="carregarHistorico()">
+                                            <i class="fas fa-search me-1"></i>Buscar
+                                        </button>
+                                        <button class="btn btn-outline-success" onclick="exportarHistorico()">
+                                            <i class="fas fa-download me-1"></i>Exportar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Histórico -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Caixa</th>
+                                            <th>Saldo Inicial</th>
+                                            <th>Suprimentos</th>
+                                            <th>Sangrias</th>
+                                            <th>Valor Máquina</th>
+                                            <th>Diferença</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tabelaHistorico">
+                                        <!-- Dados serão inseridos aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Movimentação -->
+    <div class="modal fade" id="modalMovimentacao" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalMovimentacao">Adicionar Movimentação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formMovimentacao">
+                        <div class="mb-3">
+                            <label class="form-label">Descrição</label>
+                            <input type="text" class="form-control" id="descricaoMovimentacao" placeholder="Ex: 09:00 - Abertura">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Valor</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="valorMovimentacao" step="0.01">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarMovimentacao()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
